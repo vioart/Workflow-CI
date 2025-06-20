@@ -27,10 +27,30 @@ jobs:
       working-directory: MLProject
       run: |
         python modelling.py
-        # Mendapatkan experiment ID dari eksperimen
-        EXPERIMENT_ID=$(mlflow experiments search --filter "name = 'Learning_Resources_Experiment_New'" | grep -v 'experiment_id' | awk '{print $1}' | head -n 1)
-        # Mendapatkan Run ID dari run terbaru
-        RUN_ID=$(mlflow runs list --experiment-id=$EXPERIMENT_ID | grep -v 'run_id' | awk '{print $1}' | head -n 1)
+        # Membuat script Python untuk mendapatkan experiment ID dan Run ID
+        cat <<EOF > get_mlflow_ids.py
+        import mlflow
+        import os
+        mlflow.set_tracking_uri("file:///${PWD}/mlruns")
+        experiment = mlflow.get_experiment_by_name("Learning_Resources_Experiment_New")
+        experiment_id = experiment.experiment_id if experiment else None
+        if experiment_id:
+            runs = mlflow.search_runs(experiment_ids=[experiment_id], order_by=["start_time DESC"])
+            run_id = runs.iloc[0]["run_id"] if not runs.empty else None
+            print(f"EXPERIMENT_ID={experiment_id}")
+            print(f"RUN_ID={run_id}")
+        else:
+            print("Error: Experiment not found")
+            exit(1)
+        EOF
+        # Menjalankan script dan menangkap output
+        python get_mlflow_ids.py > mlflow_ids.txt
+        # Mengekstrak EXPERIMENT_ID dan RUN_ID
+        source mlflow_ids.txt
+        if [ -z "$RUN_ID" ]; then
+          echo "Error: RUN_ID is empty or invalid"
+          exit 1
+        fi
         echo "MLflow Run ID: $RUN_ID" > run_id.txt
         
     - name: Upload artifacts
