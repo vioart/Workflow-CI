@@ -1,0 +1,7 @@
+name: Medical_Learning_Resources
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    command: "python modelling.py"
