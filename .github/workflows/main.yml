@@ -21,9 +21,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install mlflow==2.22.1 pandas==2.2.2 scikit-learn==1.2.2 numpy==1.26.4 scipy==1.15.2 cloudpickle==3.1.1 psutil==7.0.0 matplotlib==3.8.0 seaborn==0.13.2
+        pip install mlflow==2.22.1 pandas==2.2.2 scikit-learn==1.6.1 numpy==2.0.2 scipy==1.15.2 cloudpickle==3.1.1 psutil==7.0.0 matplotlib==3.8.0 seaborn==0.13.2
 
     - name: Run MLflow training script
+      working-directory: MLProject
       run: |
         python modelling.py
         echo "MLflow Run ID: $(mlflow runs list --experiment-name=Learning_Resources_Experiment_New | grep 'RUN_ID' | awk '{print $2}' | head -n 1)" > run_id.txt
@@ -32,7 +33,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: mlflow-artifacts
-        path: mlruns/
+        path: MLProject/mlruns/
         retention-days: 7
 
     - name: Set up Docker Buildx
@@ -45,6 +46,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build and push Docker image
+      working-directory: MLProject
       run: |
         RUN_ID=$(cat run_id.txt)
         mlflow models build-docker \
@@ -52,4 +54,3 @@ jobs:
           -n "vioart/mlflow-medical-learning:latest" \
           --enable-mlserver
         docker push vioart/mlflow-medical-learning:latest
-        
