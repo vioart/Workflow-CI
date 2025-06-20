@@ -52,3 +52,4 @@ jobs:
           -n "vioart/mlflow-medical-learning:latest" \
           --enable-mlserver
         docker push vioart/mlflow-medical-learning:latest
+        
