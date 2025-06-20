@@ -67,7 +67,7 @@ jobs:
       uses: docker/login-action@v3
       with:
         username: vioartss
-        password: dckr_pat_eMSwgYhimlyDO2EurgAGjZNQN4c
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and push Docker image
       working-directory: MLProject
