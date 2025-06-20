@@ -5,7 +5,7 @@ RUN pip install --no-cache-dir \
     mlflow==2.22.1 \
     pandas==2.2.2 \
     scikit-learn==1.6.1 \
-    numpy==2.0.2 \
+    numpy==1.26.4 \
     scipy==1.15.2 \
     cloudpickle==3.1.1 \
     psutil==7.0.0
