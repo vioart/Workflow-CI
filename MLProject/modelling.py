@@ -94,11 +94,12 @@ def train_model(X, y):
 
 if __name__ == "__main__":
     try:
-        base_dir = os.getcwd()
-        preprocessed_file = os.path.join(base_dir, "MLProject", "Learning_Resources_Preprocessing.csv")
+        # Mendapatkan direktori tempat modelling.py berada
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        preprocessed_file = os.path.join(base_dir, "Learning_Resources_Preprocessing.csv")
         
         print("MLflow Tracking URI:", mlflow.get_tracking_uri())
-        print("Current working directory:", os.getcwd())
+        print("Current working directory:", base_dir)
         print("Preprocessed file path:", preprocessed_file)
         print("File exists:", os.path.exists(preprocessed_file))
         
@@ -132,3 +133,4 @@ if __name__ == "__main__":
         print("\nPelatihan selesai. Cek MLflow UI untuk detail pelacakan.")
     except Exception as e:
         print(f"Terjadi kesalahan: {e}", file=sys.stderr)
+        sys.exit(1)
