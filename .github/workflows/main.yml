@@ -42,15 +42,14 @@ jobs:
     - name: Debug secrets
       run: |
         echo "Username: ${{ secrets.vioartss }}"
-        echo "Password: ${{ secrets.DOCKER_PASSWORD }}"
-        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      working-directory: MLProject
+        echo "Password: ${{ secrets.dckr_pat_eMSwgYhimlyDO2EurgAGjZNQN4c }}"
+        working-directory: MLProject
 
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        username: ${{ secrets.vioartss }}
+        password: ${{ secrets.dckr_pat_eMSwgYhimlyDO2EurgAGjZNQN4c }}
 
     - name: Build and push Docker image
       working-directory: MLProject
