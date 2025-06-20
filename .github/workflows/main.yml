@@ -25,4 +25,10 @@ jobs:
 
     - name: Run MLflow training
       run: |
-        mlflow run . --no-conda
+        mlflow run .
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: mlflow-artifacts
+        path: mlruns/
