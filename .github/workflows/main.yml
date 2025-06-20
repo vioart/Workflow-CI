@@ -48,7 +48,11 @@ jobs:
     - name: Build and push Docker image
       working-directory: MLProject
       run: |
-        RUN_ID=$(cat run_id.txt)
+        RUN_ID=$(cat run_id.txt | grep -oP '(?<=MLflow Run ID: )[a-f0-9-]+')
+        if [ -z "$RUN_ID" ]; then
+          echo "Error: RUN_ID is empty or invalid"
+          exit 1
+        fi
         mlflow models build-docker \
           -m "mlruns/0/$RUN_ID/artifacts/random_forest_model" \
           -n "vioart/mlflow-medical-learning:latest" \
