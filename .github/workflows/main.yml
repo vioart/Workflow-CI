@@ -7,28 +7,48 @@ on:
     branches: [ main ]
 
 jobs:
-  train-model:
+  train-and-build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
     - name: Install dependencies
       run: |
-        pip install mlflow==2.22.1 matplotlib==3.8.0 pandas==2.2.2 seaborn==0.13.2 scikit-learn==1.2.2 numpy==1.26.4 scipy==1.15.2 cloudpickle==3.1.1 psutil==7.0.0
+        pip install mlflow==2.22.1 pandas==2.2.2 scikit-learn==1.2.2 numpy==1.26.4 scipy==1.15.2 cloudpickle==3.1.1 psutil==7.0.0 matplotlib==3.8.0 seaborn==0.13.2
 
     - name: Run MLflow training
       run: |
-        mlflow run .
+        mlflow run . --no-conda
+        echo "MLflow Run ID: $(mlflow runs list --experiment-name=Learning_Resources_Experiment_New | grep 'RUN_ID' | awk '{print $2}' | head -n 1)" > run_id.txt
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: mlflow-artifacts
         path: mlruns/
+        retention-days: 7
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push Docker image
+      run: |
+        RUN_ID=$(cat run_id.txt)
+        mlflow models build-docker \
+          -m "mlruns/0/$RUN_ID/artifacts/random_forest_model" \
+          -n "vioart/mlflow-medical-learning:latest" \
+          --enable-mlserver
+        docker push vioart/mlflow-medical-learning:latest
