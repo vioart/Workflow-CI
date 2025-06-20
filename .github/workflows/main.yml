@@ -39,12 +39,6 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    - name: Debug secrets
-      run: |
-        echo "Username: ${{ secrets.vioartss }}"
-        echo "Password: ${{ secrets.dckr_pat_eMSwgYhimlyDO2EurgAGjZNQN4c }}"
-        working-directory: MLProject
-
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
