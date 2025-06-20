@@ -27,8 +27,10 @@ jobs:
       working-directory: MLProject
       run: |
         python modelling.py
-        # Mendapatkan Run ID dari MLflow run terbaru
-        RUN_ID=$(mlflow runs list --experiment-id=$(mlflow experiments list | grep 'Learning_Resources_Experiment_New' | awk '{print $1}') | grep -v 'RUN_ID' | awk '{print $1}' | head -n 1)
+        # Mendapatkan experiment ID dari eksperimen
+        EXPERIMENT_ID=$(mlflow experiments search --filter "name = 'Learning_Resources_Experiment_New'" | grep -v 'experiment_id' | awk '{print $1}' | head -n 1)
+        # Mendapatkan Run ID dari run terbaru
+        RUN_ID=$(mlflow runs list --experiment-id=$EXPERIMENT_ID | grep -v 'run_id' | awk '{print $1}' | head -n 1)
         echo "MLflow Run ID: $RUN_ID" > run_id.txt
         
     - name: Upload artifacts

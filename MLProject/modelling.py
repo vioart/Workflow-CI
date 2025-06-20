@@ -6,6 +6,7 @@ yang telah diproses sebelumnya, dengan pelacakan menggunakan MLflow secara lokal
 """
 
 import pandas as pd
+import numpy as np
 import os
 import mlflow
 import mlflow.sklearn
