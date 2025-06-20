@@ -48,8 +48,8 @@ jobs:
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
-        username: ${{ secrets.vioartss }}
-        password: ${{ secrets.dckr_pat_eMSwgYhimlyDO2EurgAGjZNQN4c }}
+        username: vioartss
+        password: dckr_pat_eMSwgYhimlyDO2EurgAGjZNQN4c
 
     - name: Build and push Docker image
       working-directory: MLProject
