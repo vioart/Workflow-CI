@@ -1,0 +1,10 @@
+digest: f5f679b7
+name: dataset
+profile: '{"features_shape": [124, 3651], "features_size": 452724, "features_nbytes":
+  3621792}'
+schema: '{"mlflow_tensorspec": {"features": "[{\"type\": \"tensor\", \"tensor-spec\":
+  {\"dtype\": \"float64\", \"shape\": [-1, 3651]}}]", "targets": null}}'
+source: '{"tags": {"mlflow.user": "Asus", "mlflow.source.name": "c:\\Users\\Asus\\Music\\Laskar\\Membangun
+  Sistem ML\\Workflow-CI\\MLProject\\modelling.py", "mlflow.source.type": "LOCAL",
+  "mlflow.source.git.commit": "4e72f3866d75d75777ceb6923829545cb6d0dc93"}}'
+source_type: code
