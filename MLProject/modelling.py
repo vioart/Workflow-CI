@@ -95,7 +95,7 @@ def train_model(X, y):
 if __name__ == "__main__":
     try:
         base_dir = os.getcwd()
-        preprocessed_file = os.path.join(base_dir, "Learning_Resources_Preprocessing.csv")
+        preprocessed_file = os.path.join(base_dir, "MLProject", "Learning_Resources_Preprocessing.csv")
         
         print("MLflow Tracking URI:", mlflow.get_tracking_uri())
         print("Current working directory:", os.getcwd())
